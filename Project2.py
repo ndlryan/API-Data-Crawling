@@ -144,7 +144,7 @@ async def main():
     fail_mask = df[['name', 'url_key', 'price', 'description', 'image_url']].isna().all(axis=1)
     fail_count = fail_mask.sum()
     complete_count = len(df) - fail_count
-    missing_fields_count = df['missing_fields'].apply(lambda x: bool(x.strip())).sum()
+    missing_fields_count = df['missing_fields'].apply(lambda x: bool(str(x).strip()) and str(x).lower() != 'nan').sum()
 
     # Count HTTP errors
     try:
