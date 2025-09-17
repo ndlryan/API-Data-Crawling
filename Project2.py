@@ -15,7 +15,6 @@ import logging
 import os
 import csv
 import re
-from collections import Counter
 
 # -------------------- Configuration --------------------
 INPUT_FILE = "product_id.xlsx"            # Input Excel file with product IDs
@@ -146,27 +145,12 @@ async def main():
     complete_count = len(df) - fail_count
     missing_fields_count = df['missing_fields'].apply(lambda x: bool(str(x).strip()) and str(x).lower() != 'nan').sum()
 
-    # Count HTTP errors
-    try:
-        with open(LOG_FILE, "r", encoding="utf-8") as f:
-            errors = f.readlines()
-        error_codes = [line.split()[-1] for line in errors if "FAILED" in line]
-        error_summary = Counter(error_codes)
-    except FileNotFoundError:
-        error_summary = Counter()
-
-    # Print summary
+    # Print summary without HTTP error codes
     print("\n========== Crawl Summary ==========")
     print(f"Total products: {len(df)}")
     print(f"✅ Complete: {complete_count}")
     print(f"❌ Failures: {fail_count}")
     print(f"Products with missing fields (still counted as complete): {missing_fields_count}")
-    print("\nError summary (HTTP codes):")
-    if error_summary:
-        for code, count in error_summary.items():
-            print(f"{code}: {count}")
-    else:
-        print("No HTTP errors logged.")
     print("==================================\n")
 
 # -------------------- Run Script --------------------
