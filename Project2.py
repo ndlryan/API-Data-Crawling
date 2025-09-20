@@ -217,7 +217,7 @@ Step 3:
 """
 
 import re
-import panda as pd
+import pandas as pd
 
 LOG_FILE = "errors.log"
 OUTPUT_FILE = "failed_ids.xlsx"
