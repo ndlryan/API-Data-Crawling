@@ -247,5 +247,5 @@ else:
 Step 4:
 - Rerun on main script with INPUT_FILE = "failed_ids.xlsx"
 - If there's any valid record, chances will be applied to "product_results.tsv"
-- Orelse, nothing happenn
+- Orelse, nothing change.
 """
