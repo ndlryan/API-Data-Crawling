@@ -7,8 +7,6 @@
 
 nano ~/supervisord.conf
 
-# ----- In which -----
-
 [supervisord]
 logfile=/Users/mac/supervisord.log
 pidfile=/Users/mac/supervisord.pid
@@ -28,7 +26,6 @@ supervisord -c ~/supervisord.conf
 supervisorctl -c ~/supervisord.conf status
 
 # ----- Start at reboot -----
-#config
 
 nano ~/Library/LaunchAgents/com.user.supervisord.plist
 
