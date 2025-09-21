@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+"""
+- Work with exceptions using errors.log file
+- Ensure no valid record left behind
+"""
+
+import re
+import pandas as pd
+
+LOG_FILE = "errors.log"
+OUTPUT_FILE = "failed_ids.xlsx"
+
+pattern = re.compile(r"(?:FAILED|EXCEPTION)\s+(\d+)")
+
+failed_ids = []
+
+with open(LOG_FILE, "r", encoding="utf-8") as f:
+    for line in f:
+        match = pattern.search(line)       # Look for FAILED or EXCEPTION + number
+        if match:
+            failed_ids.append(int(match.group(1)))  # Extract the ID as integer
+
+# ----- Deduplicate Once More -----
+failed_ids = list(sorted(set(failed_ids)))
+print(f"✅ Extracted {len(failed_ids)} unique failed IDs from {LOG_FILE}")
+
+if failed_ids:
+    df = pd.DataFrame(failed_ids, columns=["id"])
+    df.to_excel(OUTPUT_FILE, index=False)
+    print(f"💾 Saved IDs to {OUTPUT_FILE}")
+else:
+    print("⚠️ No failed IDs found in the log. Nothing to save.")
+
+"""
+- Rerun on main script with INPUT_FILE = "failed_ids.xlsx"
+- If there's any valid record, chances will be applied to "product_results.tsv"
+- Orelse, nothing change.
+"""
